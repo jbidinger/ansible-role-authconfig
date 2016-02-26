@@ -1,0 +1,14 @@
+--- /usr/share/bash-completion/bash_completion.orig	2014-11-06 10:36:14.981888369 +0100
++++ /usr/share/bash-completion/bash_completion	2014-11-06 10:36:25.142070963 +0100
+@@ -542,9 +542,9 @@
+     elif [[ $1 == \'* ]]; then
+         # Leave out first character
+         printf -v $2 %s "${1:1}"
+-    elif [[ $1 == ~* ]]; then
++    elif [[ $1 == \~* ]]; then
+         # avoid escaping first ~
+-        printf -v $2 ~%q "${1:1}"
++        printf -v $2 \~%q "${1:1}"
+     else
+         printf -v $2 %q "$1"
+     fi

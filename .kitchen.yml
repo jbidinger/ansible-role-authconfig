@@ -1,0 +1,23 @@
+---
+driver:
+  name: vagrant
+
+provisioner:
+  name: ansible_push
+  playbook: test.yml
+  sudo: true
+  remote_user: vagrant
+  host_key_checking: false
+  chef_bootstrap_url: false
+  verbose: "vv"
+  idempotency_test: True
+
+
+platforms:
+  - name: ubuntu-14.04
+#  - name: centos7_vagrant
+#    driver_config:
+#      box: puppetlabs/centos-7.0-64-nocm
+
+suites: 
+  - name: default

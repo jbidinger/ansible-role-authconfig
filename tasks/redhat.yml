@@ -1,0 +1,15 @@
+---
+- name: authconfig packages
+  yum: name={{ item }}
+  with_items: authconfig_packages
+#  notify: run authconfig command
+
+- name: run authconfig command
+  command: authconfig {{ authconfig_opts }}
+  args:
+    creates: /var/lib/authconfig/backup-ansible_configured
+  when: ansible_distribution_major_version == 7
+
+#- name: authconfig status
+#  stat: /etc/sysconfig/authconfig path=/etc/sysconfig/authconfig
+#    register: authconfig_md5

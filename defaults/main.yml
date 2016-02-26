@@ -1,0 +1,32 @@
+---
+authconfig_debug_mode: false
+
+# defaults file for authconfig
+# LDAP base DN
+basedn: 'dc=foo,dc=bar'
+
+domain: 'foobar.com'
+
+# List/array of AD servers
+servers:
+  - 'ad1.foobar.com'
+  - 'ad2.foobar.com'
+
+# AD account that can query the domain for user ID lookups
+ldap_bind_user: ''
+ldap_bind_pass: ''
+
+# An array/list of groups that have access to the host
+access_groups:
+  - 'foo_bar'
+# An array/list of users that have access to the host
+access_users: []
+
+# Needed for kerberos
+# AD realm, must be all uppercase
+realm: 'FOOBAR.COM'
+# Windows domain
+windomain: 'FOOBAR'
+
+# This variable sometimes does not get set and shouldn't be relied on.
+ansible_distribution_major_version: ""

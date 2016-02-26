@@ -1,0 +1,53 @@
+---
+# tasks file for authconfig
+- set_fact:
+    distro: "{{ansible_lsb.id}}-{{ansible_lsb.major_release}}"
+  when: ansible_lsb.description is defined
+- set_fact:
+    distro: "{{ansible_distribution}}-{{ansible_distribution_major_version}}"
+  when: ansible_lsb.description is undefined
+
+# load version-specific variables
+- include_vars: "{{ item }}"
+  with_first_found:
+    - "../vars/{{distro}}.yml"
+
+# Redhat support incomplete
+- include: redhat.yml
+  when: ansible_distribution == 'Redhat' or ansible_distribution == 'CentOS'
+
+# Ubuntu seems to work
+- include: ubuntu.yml
+  when: ansible_distribution == 'Ubuntu'
+
+# Common files between the dists
+- name: krb5.conf
+  template:
+    src: krb5.conf.j2
+    dest: /etc/krb5.conf
+
+- name: access.conf
+  template:
+    src: access.conf.j2
+    dest: /etc/security/access.conf
+
+- name: Install ssh legal thing
+  copy:
+    src: ssh_issue
+    dest: /etc/ssh/issue
+  notify: restart ssh
+- name: Update sshd_config for legal thing
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    line: 'Banner /etc/ssh/issue'
+    regexp: '^(#|)Banner\ .*'
+  notify: restart ssh
+
+- name: allow password auth
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    line: 'PasswordAuthentication yes'
+    regexp: '^(#|)PasswordAuthentication\ .*'
+  notify: restart ssh
+
+- include: test.yml

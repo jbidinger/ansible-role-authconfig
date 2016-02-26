@@ -1,0 +1,5 @@
+---
+# Path to the mkhomedir command
+# Now set in vars/{{ ansible_distribution_major_version }}.yml
+# /usr/lib64/oddjob/mkhomedir in RHEL 4
+# /usr/libexec/oddjob/mkhomedir in RHEL 5 and up

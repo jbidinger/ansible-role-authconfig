@@ -1,0 +1,13 @@
+---
+# Ubuntu 14.x packages
+authconfig_packages: 
+  - ldap-utils
+  - krb5-user
+  - libpam-krb5
+  - sssd
+  - sssd-tools
+  - libpam-sss
+  - libnss-sss
+
+#nslcd_gid: nslcd
+#uniquemember: ''

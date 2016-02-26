@@ -1,0 +1,5 @@
+---
+- meta: flush_handlers
+- name: Test AD lookups
+  command: id linuxbind
+  changed_when: false

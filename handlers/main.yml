@@ -1,0 +1,11 @@
+---
+# handlers file for authconfig
+
+- name: restart sssd
+  command: service sssd restart
+
+- name: restart ssh
+  command: service ssh restart
+
+- name: pam-auth-update
+  command: /usr/sbin/pam-auth-update --package

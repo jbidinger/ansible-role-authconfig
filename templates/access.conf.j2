@@ -1,0 +1,14 @@
+### ANSIBLE MANAGED!!! ####
++ : root : ALL
+{% if access_users is defined %}
++ : {% for user in access_users %}{{ user }} {% endfor %}: ALL
++ : {{ access_users|join(" ") }} : ALL
+{% endif %}
+{% if access_groups is defined %}
+{% if ansible_distribution_major_version|int >= 6 %}
++ : {% for group in access_groups %}({{ group }}) {% endfor %}: ALL
+{% else %}
++ : {% for group in access_groups %}{{ group }} {% endfor %}: ALL
+{% endif %}
+{% endif %}
+- : ALL : ALL EXCEPT LOCAL

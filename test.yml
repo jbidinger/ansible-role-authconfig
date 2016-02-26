@@ -1,0 +1,8 @@
+---
+- hosts: all
+  vars:
+    ldap_bind_user: "{{ lookup('env', 'LDAP_BIND_USER') }}"
+    ldap_bind_pass: "{{ lookup('env', 'LDAP_BIND_PASS') }}"
+    authconfig_debug_mode: true
+  roles:
+    - ansible-role-authconfig
