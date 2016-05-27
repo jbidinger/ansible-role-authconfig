@@ -1,38 +1,39 @@
+## {{ ansible_managed }}
+
 [sssd]
-domains = {{domain}}
+domains = {{authconfig_domain}}
 {% if authconfig_debug_mode %}
-debug_level = 3
+debug_level = {{ authconfig_debug_level }}
 {% endif %}
-services = nss, pam
+services = nss, pam, ssh, sudo
 config_file_version = 2
 
 [nss]
 {% if authconfig_debug_mode %}
-debug_level = 3
+debug_level = {{ authconfig_debug_level }}
 {% endif %}
 filter_users = root,daemon,bin,sys,sync,games,man,lp,mail,news,uucp,proxy,www-data,backup,nobody,syslog,sshd,vagrant,ubuntu,ansible
 filter_groups = root,daemon,bin,sys,sync,games,man,lp,mail,news,uucp,proxy,www-data,backup,nobody,syslog,sshd,vagrant,ubuntu,ansible
 
 [pam]
 {% if authconfig_debug_mode %}
-debug_level = 3
+debug_level = {{ authconfig_debug_level }}
 {% endif %}
 
-[domain/foobar.com]
+[domain/{{ authconfig_domain }}]
 {% if authconfig_debug_mode %}
-debug_level = 3
+debug_level = {{ authconfig_debug_level }}
 {% endif %}
-id_provider = ldap
-ldap_uri = {% for s in servers %}ldap://{{s}}/{% if not loop.last %},{% endif %}{% endfor %}
-
-ldap_schema = AD
-ldap_search_base = {{basedn}}
-ldap_default_bind_dn = {{ldap_bind_user}}
-ldap_default_authtok = {{ldap_bind_pass}}
-ldap_id_use_start_tls = true
-ldap_tls_reqcert = allow
-
-auth_provider = krb5
-krb5_realm = {{realm}}
-krb5_server = {{servers|join(',')}}
-cache_credentials = true
+ad_domain = {{ authconfig_domain }}
+krb5_realm = {{ authconfig_realm }}
+realmd_tags = manages-system joined-with-samba 
+cache_credentials = True
+id_provider = ad
+krb5_store_password_if_offline = True
+default_shell = /bin/bash
+ldap_id_mapping = True
+use_fully_qualified_names = False
+fallback_homedir = /home/%u
+access_provider = simple
+simple_allow_groups = {{ authconfig_access_groups| join(', ') }}
+simple_allow_users  = {{ authconfig_access_users | join(', ') }}

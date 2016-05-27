@@ -1,32 +1,21 @@
 ---
 authconfig_debug_mode: false
+authconfig_debug_level: 3
 
-# defaults file for authconfig
-# LDAP base DN
-basedn: 'dc=foo,dc=bar'
+authconfig_domain: 'example.com'
+authconfig_realm:  'EXAMPLE.COM'
+authconfig_windomain: "EXAMPLECOM"
+authconfig_computer_ou: 'ou=computers,dc=example,dc=com'
 
-domain: 'foobar.com'
-
-# List/array of AD servers
-servers:
-  - 'ad1.foobar.com'
-  - 'ad2.foobar.com'
-
-# AD account that can query the domain for user ID lookups
-ldap_bind_user: ''
-ldap_bind_pass: ''
+authconfig_sssd_user: 'prod.example_sssdjoin.username'
+authconfig_sssd_pass: 'prod.example_sssdjoin.password'
 
 # An array/list of groups that have access to the host
-access_groups:
-  - 'foo_bar'
-# An array/list of users that have access to the host
-access_users: []
+authconfig_access_groups:
+  - 'Sysadmin'
 
-# Needed for kerberos
-# AD realm, must be all uppercase
-realm: 'FOOBAR.COM'
-# Windows domain
-windomain: 'FOOBAR'
+# An array/list of users that have access to the host
+authconfig_access_users: []
 
 # This variable sometimes does not get set and shouldn't be relied on.
 ansible_distribution_major_version: ""

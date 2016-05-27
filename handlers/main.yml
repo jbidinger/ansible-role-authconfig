@@ -5,7 +5,12 @@
   command: service sssd restart
 
 - name: restart ssh
+  command: service sshd restart
+  when: ansible_distribution == 'Redhat' or ansible_distribution == 'CentOS'
+
+- name: restart ssh
   command: service ssh restart
+  when: ansible_distribution == 'Ubuntu'
 
 - name: pam-auth-update
   command: /usr/sbin/pam-auth-update --package

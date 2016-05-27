@@ -1,6 +1,9 @@
 ---
 # Ubuntu 14.x packages
 authconfig_packages: 
+  - realmd
+  - adcli
+  - packagekit   # Needed to work around a bug
   - ldap-utils
   - krb5-user
   - libpam-krb5
@@ -9,5 +12,3 @@ authconfig_packages:
   - libpam-sss
   - libnss-sss
 
-#nslcd_gid: nslcd
-#uniquemember: ''

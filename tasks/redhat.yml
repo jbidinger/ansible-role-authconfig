@@ -2,14 +2,16 @@
 - name: authconfig packages
   yum: name={{ item }}
   with_items: authconfig_packages
-#  notify: run authconfig command
 
-- name: run authconfig command
-  command: authconfig {{ authconfig_opts }}
+- name: Join Domain
+  shell: "echo -n '{{ hostvars['localhost']['authconfig_sssd_pass'] }}' | adcli join --stdin-password --domain-ou={{ authconfig_computer_ou }} --login-user={{ hostvars['localhost']['authconfig_sssd_name'] }} {{ authconfig_domain }}"
+  args:
+    creates: /etc/krb5.keytab
+
+- name: authconfig
+  command: "authconfig --enablesssd --enablesssdauth --disableldap --disableldapauth --enablemkhomedir --savebackup=ansible_configured --update"
   args:
     creates: /var/lib/authconfig/backup-ansible_configured
-  when: ansible_distribution_major_version == 7
 
-#- name: authconfig status
-#  stat: /etc/sysconfig/authconfig path=/etc/sysconfig/authconfig
-#    register: authconfig_md5
+
+  

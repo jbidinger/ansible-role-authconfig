@@ -1,28 +1,13 @@
 ---
-# EL6-specific variables
-authconfig_opts: --update --enablesssd --enablesssdauth --enablemkhomedir --savebackup=ansible_configured
-
-#--disablesssd --disablesssdauth --passalgo sha512 --enableldap --disableldapauth --enablecache --enableshadow --enablekrb5 --enablelocauthorize --disablesysnetauth --enableforcelegacy --ldapbasedn="{{ basedn }}" --enablerfc2307bis --krb5realm="{{ realm }}" --krb5adminserver="{{ servers|join(' ') }}" --krb5kdc="{{ servers|join(' ') }}" --enablekrb5kdcdns --enablekrb5realmdns --smbsecurity=ads --smbrealm="{{ realm }}" --smbworkgroup="{{ windomain }}" --smbservers="{{ servers|join(' ') }}" --enablepamaccess --enablemkhomedir --disablesmartcard --disablefingerprint --nostart --updateall
-
+# Cent/EL 7
 authconfig_packages:
   - 'sssd'
+  - 'adcli'
+  - 'realmd'
   - 'krb5-workstation'
+  - 'oddjob'
   - 'oddjob-mkhomedir'
   - 'authconfig'
-  - 'vim'
+  - 'samba-common'
 
-#  - 'nscd'
-#  - 'oddjob'
-#  - 'oddjob-mkhomedir'
-#  - 'krb5-workstation'
-#  - 'nss-pam-ldapd'
-#  - 'pam_krb5'
-#  - 'pam_ldap'
-#  - 'authconfig'
-#  - 'samba-client'
-#  - 'samba-common'
 
-#mkhomedir_path: '/usr/libexec/oddjob/mkhomedir'
-
-#nslcd_gid: ldap
-#uniquemember: 'map    group  uniqueMember     member'
