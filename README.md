@@ -1,17 +1,17 @@
 ansible-role-authconfig
 =========
 
-Configure authentication against Active Directory using sssd.
+Configure authentication against Active Directory using sssd, adcli, and authconfig.
 
-Note that versions of ansible-role-authconfig < 1.0.0 use nslcd and nscd, and
-are maintained in the `nslcd` branch.
+This role joins the domain using adcli.
 
 Requirements
 ------------
 
 Active Directory Domain with tls/LDAP and Kerberos.
 
-Only Ubuntu 14.04 is supported at this time.
+Cent/RedHat/EL 6 and 7 are supported at this time. Only slight modifications should
+be needed to support Ubuntu.
 
 This role does NOT configure sudo.
 
@@ -22,32 +22,30 @@ Role Variables
 
 | variable | description | default
 |----------|-------------|---------
-| `ldap_bind_user` | LDAP bind username | none
-| `ldap_bind_pass` | LDAP bind user password | none
+| authconfig_domain | AD domain | 'example.com' |
+| authconfig_realm  | AD Realm  | 'EXAMPLE.COM' |
+| authconfig_windomain | AD Windows Domain | "EXAMPLECOM" |
+| authconfig_computer_ou | Where to create the computer object in AD | 'ou=computers,dc=example,dc=com' |
+| authconfig_sssd_user | Credstash name of user to use to join domain | 'prod.example_sssdjoin.username' |
+| authconfig_sssd_pass | Credstash name of password to use | 'prod.example_sssdjoin.password' |
+
+# An array/list of groups that have access to the host
+authconfig_access_groups: []
+
+# An array/list of users that have access to the host
+authconfig_access_users: []
 
 ### Optional
 
-| variable | description | default
-|----------|-------------|---------
-| `authconfig_debug_mode` | Enable sssd debug logging | false
-| `base_dn` | LDAP base DN | 'dc=foobar,dc=com'
-| `domain` | LDAP domain name | 'foobar.com'
-| `servers` (list) | AD servers | 'ad1.foobar.com, ad2.foobar.com'
-| `access_groups` (list) | AD groups allowed to ssh into the host | 'foo_bar'
-| `access_users` (list) | AD users allowed to ssh into the host | ''
-| `realm` | Kerberos realm | 'FOOBAR.COM'
-| `windomain` | AD domain short name | 'FOOBAR'
+# Optionally enable sssd debug logging
+authconfig_debug_mode: false
+authconfig_debug_level: 3
+
 
 Example Playbook
 ----------------
 
 See test.yml
-
-Testing
--------
-
-- LDAP_BIND_USER
-- LDAP_BIND_PASS
 
 License
 -------
@@ -56,5 +54,5 @@ BSD
 
 Author Information
 ------------------
-
-Jeff Gibson, Dan Rue and Adrian Herrera
+Jon Bidinger based on work by:
+   Jeff Gibson, Dan Rue and Adrian Herrera
