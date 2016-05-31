@@ -38,6 +38,7 @@
     group: root
     mode: 0600
     backup: yes
+  notify: restart sssd
 
 #- name: access.conf
 #  template:
@@ -63,17 +64,18 @@
     regexp: '^(#|)Banner\ .*'
   notify: restart ssh
 
-- name: enable and start sssd
-  service:
-    name: sssd
-    enabled: yes
-    state: restarted
+#- name: enable and start sssd
+#  service:
+#    name: sssd
+#    enabled: yes
+#    state: restarted
 
 - name: enable and start oddjob
   service:
     name: oddjobd
     enabled: yes
-    state: restarted
+    state: started
+  notify: authconfig mkhomedir
 
 # JB: Not sure if we need this with Kerb Auth
 #- name: allow password auth

@@ -8,6 +8,16 @@ debug_level = {{ authconfig_debug_level }}
 services = nss, pam, ssh, sudo
 config_file_version = 2
 
+[ssh]
+{% if authconfig_debug_mode %}
+debug_level = {{ authconfig_debug_level }}
+{% endif %}
+
+[sudo]
+{% if authconfig_debug_mode %}
+debug_level = {{ authconfig_debug_level }}
+{% endif %}
+
 [nss]
 {% if authconfig_debug_mode %}
 debug_level = {{ authconfig_debug_level }}

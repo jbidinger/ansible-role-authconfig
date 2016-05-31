@@ -1,7 +1,9 @@
 ---
 - name: authconfig packages
   yum: name={{ item }}
-  with_items: authconfig_packages
+  with_items: "{{ authconfig_packages }}"
+
+#   shell: "echo -n '{{ hostvars['localhost']['authconfig_sssd_pass'] }}' | adcli join --stdin-password --domain-ou={{ authconfig_computer_ou }} --login-user={{ hostvars['localhost']['authconfig_sssd_name'] }} {{ authconfig_domain }}"
 
 - name: Join Domain
   shell: "echo -n '{{ hostvars['localhost']['authconfig_sssd_pass'] }}' | adcli join --stdin-password --domain-ou={{ authconfig_computer_ou }} --login-user={{ hostvars['localhost']['authconfig_sssd_name'] }} {{ authconfig_domain }}"
@@ -9,9 +11,30 @@
     creates: /etc/krb5.keytab
 
 - name: authconfig
-  command: "authconfig --enablesssd --enablesssdauth --disableldap --disableldapauth --enablemkhomedir --savebackup=ansible_configured --update"
+  shell: "/usr/sbin/authconfig --enablesssd --enablesssdauth --disableldap --disableldapauth --enablemkhomedir --savebackup=ansible_configured --update"
   args:
     creates: /var/lib/authconfig/backup-ansible_configured
+  notify: restart sssd
+
+# On Cent/EL 6 nsswitch.conf is not updated.
+- name: nsswitch passwd
+  lineinfile:
+    dest: /etc/nsswitch.conf
+    line: 'passwd:     files sss'
+    regexp: '^passwd: .*'
+
+- name: nsswitch shadow
+  lineinfile:
+    dest: /etc/nsswitch.conf
+    line: 'shadow:     files sss'
+    regexp: '^shadow: .*'
+
+- name: nsswitch group
+  lineinfile:
+    dest: /etc/nsswitch.conf
+    line: 'group:      files sss'
+    regexp: '^group: .*'
+
 
 
   

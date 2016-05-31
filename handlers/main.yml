@@ -1,15 +1,32 @@
 ---
 # handlers file for authconfig
 
+# --enablemkhomedir only seems to work if --savebackup isn't specified so it was moved to a handler
+# invoked after oddjob is started.
+- name: authconfig mkhomedir
+  command: "/usr/sbin/authconfig --enablemkhomedir --update"
+#  args:
+#    creates: /var/lib/authconfig/backup-ansible_configured2
+  notify: restart sssd
+
 - name: restart sssd
-  command: service sssd restart
+  service:
+    name: sssd
+    enabled: yes
+    state: restarted
 
 - name: restart ssh
-  command: service sshd restart
+  service:
+    name: sshd
+    enabled: yes
+    state: restarted
   when: ansible_distribution == 'Redhat' or ansible_distribution == 'CentOS'
 
 - name: restart ssh
-  command: service ssh restart
+  service:
+    name: ssh
+    enabled: yes
+    state: restarted
   when: ansible_distribution == 'Ubuntu'
 
 - name: pam-auth-update
