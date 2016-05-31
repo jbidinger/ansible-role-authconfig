@@ -1,8 +1,16 @@
 ---
-- hosts: all
-  vars:
-    ldap_bind_user: "{{ lookup('env', 'LDAP_BIND_USER') }}"
-    ldap_bind_pass: "{{ lookup('env', 'LDAP_BIND_PASS') }}"
-    authconfig_debug_mode: true
+- hosts: localhost
+  pre_tasks:
+    - set_fact: 
+        authconfig_sssd_name: "{{ lookup('credstash', 'prod.addomain_sssdjoin.username', region='us-west-2') }}"     
+    - set_fact: 
+        authconfig_sssd_pass: "{{ lookup('credstash', 'prod.addomain_sssdjoin.password', region='us-west-2') }}"
+
+- hosts: sssdsetup
+  pre_tasks:
+      - include_vars: "{{ item }}"
+        run_once: true
+        with_first_found: ["vars/{{environ}}.yml","vars/default.yml"]  
+
   roles:
     - ansible-role-authconfig

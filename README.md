@@ -3,7 +3,7 @@ ansible-role-authconfig
 
 Configure authentication against Active Directory using sssd, adcli, and authconfig.
 
-This role joins the domain using adcli.
+This role joins to and AD domain using adcli.
 
 Requirements
 ------------
@@ -20,26 +20,24 @@ Role Variables
 
 ### Required
 
-| variable | description | default
-|----------|-------------|---------
+| variable | description | default |
+|----------|-------------|---------|
 | authconfig_domain | AD domain | 'example.com' |
 | authconfig_realm  | AD Realm  | 'EXAMPLE.COM' |
 | authconfig_windomain | AD Windows Domain | "EXAMPLECOM" |
 | authconfig_computer_ou | Where to create the computer object in AD | 'ou=computers,dc=example,dc=com' |
 | authconfig_sssd_user | Credstash name of user to use to join domain | 'prod.example_sssdjoin.username' |
 | authconfig_sssd_pass | Credstash name of password to use | 'prod.example_sssdjoin.password' |
-
-# An array/list of groups that have access to the host
-authconfig_access_groups: []
-
-# An array/list of users that have access to the host
-authconfig_access_users: []
+| | |
+| authconfig_access_groups | Array of groups that have access to the host | [] |
+| authconfig_access_users  | Array of users that have access to the host | [] |
 
 ### Optional
 
-# Optionally enable sssd debug logging
-authconfig_debug_mode: false
-authconfig_debug_level: 3
+| variable | description | default |
+|----------|-------------|---------|
+| authconfig_debug_mode | Enable debug logging | false |
+| authconfig_debug_level | debug logging level 0-9 | 3 |
 
 
 Example Playbook
