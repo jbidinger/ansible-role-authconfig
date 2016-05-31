@@ -11,8 +11,7 @@ authconfig_sssd_user: 'prod.example_sssdjoin.username'
 authconfig_sssd_pass: 'prod.example_sssdjoin.password'
 
 # An array/list of groups that have access to the host
-authconfig_access_groups:
-  - 'Sysadmin'
+authconfig_access_groups: []
 
 # An array/list of users that have access to the host
 authconfig_access_users: []
